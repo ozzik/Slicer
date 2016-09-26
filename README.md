@@ -4,6 +4,8 @@
 
 Your friendly Sketch slicing helper.
 
+![Demo](docs/assets/demo@2x.gif)
+
 Read more at https://ozzik.github.io/Slicer.
 
 ## How to Install

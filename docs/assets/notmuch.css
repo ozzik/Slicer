@@ -96,6 +96,11 @@ h1 {
 /* Content */
 .content { margin-top: 80px; }
 
+.demo { 
+	margin: 0 auto 40px;
+	border-radius: 4px;
+	border: 1px solid #E5E5E5;
+}
 .column {
 	width: 26%;
 	text-align: center; 
