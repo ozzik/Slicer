@@ -1,0 +1,37 @@
+{
+  "author" : "Oz Pinhas",
+  "commands" : [
+    {
+      "script" : "commands.js",
+      "handler" : "exportToFolder",
+      "name" : "Export to Folder",
+      "shortcut" : "cmd e",
+      "identifier" : "exportToFolder"
+    },
+    {
+      "script" : "commands.js",
+      "handler" : "exportToFolderAs",
+      "name" : "Export to Folder As...",
+      "shortcut" : "cmd alt e",
+      "identifier" : "exportToFolderAs"
+    }
+  ],
+  "menu": {
+    "isRoot": true,
+    "items": [
+      {
+        "title": "Slicer",
+        "items": [
+          "exportToFolder",
+          "exportToFolderAs",
+          "do9patch"
+        ]
+      }
+    ]
+  },
+  "identifier" : "co.ozzik.slicer",
+  "version" : "0.3.1",
+  "description" : "Exporting life",
+  "authorEmail" : "hey@ozzik.co",
+  "name" : "Slicer"
+}
