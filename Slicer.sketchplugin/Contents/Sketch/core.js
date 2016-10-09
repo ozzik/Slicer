@@ -33,11 +33,6 @@ SL.Slicer = {
 		var selection = context.selection,
 			doc = context.document,
 			platforms = { "android": "Android", "ios": "iOS" }, // Fake keys
-			rect,
-			slice,
-			sizeData,
-			fileName,
-			is9Patch,
 			isSuccess = true,
 			previousShouldFixArtboardBackground,
 			previousShouldFixSliceBackground,
@@ -57,37 +52,72 @@ SL.Slicer = {
 
 			// Each platform
 			for (var platform in platforms) {
-				if (!config[platform]) { continue; }
+				if (!config[platform].length) { continue; }
 
 				config.nestedFolder = (config.android.length && config.ios.length) ? platforms[platform] + "/" : "";
 
 				// Possible 9 patch layer
 				if (platform == "android" && selection[s].name().indexOf(".9") == selection[s].name().length() - 2) {
 					isSuccess &= SL.NinePatch.try(selection[s], context, config);
-				} else { // Normal layer
-					rect = MSSliceTrimming.trimmedRectForSlice(selection[s]);
-
-					// Each size
-					for (var i in config[platform]) {
-						sizeData = config[platform][i];
-						sizeData = _SIZES[platform][sizeData];
-
-						slice = MSExportRequest.requestWithRect_scale(rect, sizeData.size);
-
-						if (platform != "android") {
-							fileName = (config.nestedFolder || "") + selection[s].name() + sizeData.name + ".png";
-						} else {
-							fileName = (config.nestedFolder || "") + "drawable-" + sizeData.name + "/" + selection[s].name() + ".png";
-						}
-						
-						doc.saveArtboardOrSlice_toFile(slice, (config.directory + fileName));
-					}
+				} else if (selection[s].class() == "MSSliceLayer") { // Slice
+					SL.Slicer._exportSlice(selection[s], platform, config, context);
+				} else { // Layer/group
+					SL.Slicer._exportLayer(selection[s], platform, config, context);
 				}
 			}
 		}
 		isSuccess &= !isStop;
 
 		return isSuccess;
+	},
+
+	_exportSlice: function(selection, platform, config, context) {
+		var rect = MSSliceTrimming.trimmedRectForSlice(selection),
+			sizeData,
+			slice,
+			fileName;
+
+		for (var i in config[platform]) {
+			sizeData = config[platform][i];
+			sizeData = _SIZES[platform][sizeData];
+
+			slice = MSExportRequest.requestWithRect_scale(rect, sizeData.size);
+			SL.Slicer._saveSliceToFile(slice, selection, platform, sizeData, config, context);
+		}
+	},
+
+	_exportLayer: function(selection, platform, config, context) {
+		var slices,
+			sizeData,
+			exportOption,
+			fileName;
+
+		for (var i in config[platform]) {
+			sizeData = config[platform][i];
+			sizeData = _SIZES[platform][sizeData];
+
+			selection.exportOptions().removeAllExportFormats();
+			exportOption = selection.exportOptions().addExportFormat();
+			exportOption.setName("");
+			exportOption.setScale(sizeData.size);
+
+			slices = MSExportRequest.exportRequestsFromExportableLayer(selection);
+			SL.Slicer._saveSliceToFile(slices[0], selection, platform, sizeData, config, context);
+		}
+
+		selection.exportOptions().removeAllExportFormats();
+	},
+
+	_saveSliceToFile: function(slice, selection, platform, sizeData, config, context) {
+		var fileName;
+
+		if (platform != "android") {
+			fileName = (config.nestedFolder || "") + selection.name() + sizeData.name + ".png";
+		} else {
+			fileName = (config.nestedFolder || "") + "drawable-" + sizeData.name + "/" + selection.name() + ".png";
+		}
+
+		context.document.saveArtboardOrSlice_toFile(slice, (config.directory + fileName));
 	},
 
 	_tryToFixArtboardBackground: function(context, artboard, config, previousShouldFix) {
@@ -203,7 +233,7 @@ SL.ExportConfig = {
 					iosSizes = [ 0, 1 ];
 					break;
 				case 2:
-					androidSizes = [ 0, 1, 2, 3 ];
+					androidSizes = [ 0, 1, 2, 3, 4 ];
 					break;
 				case 3:
 					androidSizes = [ 1, 3 ];
@@ -232,7 +262,6 @@ SL.ExportConfig = {
 
 		// Detecting config
 		if (nibui.tabView.selectedTabViewItem().label() == "Presets") {
-			// if (nibui.radioPreset0.state())
 			while (i < 4 && !selected.length) {
 				nibui["radioPreset" + i].state() && selected.push(i);
 				i++;
@@ -291,7 +320,7 @@ SL.UI = {
 				"tabView",
 				"radioPreset0", "radioPreset1", "radioPreset2", "radioPreset3",
 				"checkIos0", "checkIos1", "checkIos2",
-				"checkAndroid0", "checkAndroid1", "checkAndroid2", "checkAndroid3",
+				"checkAndroid0", "checkAndroid1", "checkAndroid2", "checkAndroid3", "checkAndroid4",
 				"checkOpenFolderPostExport"
 			]
 		);
@@ -385,7 +414,6 @@ SL.NinePatch = {
 			return;
 		}
 		// Validating patch sizes for 1.5x
-		// log(config.android.indexOf(1));
 		if (config.android.indexOf(1) != -1 && !SL.NinePatch._validate(context, layers, inferData)) { return; } // Bad patch
 
 		// Dummy holding page
@@ -480,8 +508,6 @@ SL.NinePatch = {
 			frame = patches[i].frame();
 			patchName = SL.NinePatch._detectPatch(frame, layers[data.iSlice]);
 			isHorizontalPatch = (patchName == "top" || patchName == "bottom");
-			log(isHorizontalPatch);
-			log(patchName)
 
 			// Width/height
 			isValid = isHorizontalPatch ? (frame.width() % 2 == 0) : (frame.height() % 2 == 0);

@@ -15,6 +15,10 @@ var _SIZES = {
 		{
 			size: 3,
 			name: "xxhdpi"
+		},
+		{
+			size: 4,
+			name: "xxxhdpi"
 		}
 	],
 	ios: [
