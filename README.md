@@ -13,6 +13,8 @@ Read more at https://ozzik.github.io/Slicer.
 2. Open ```Slicer.sketchplugin``` (Sketch will magically install the plugin)
 
 ## Wha's new
+* 0.4.1 (Nov 8)
+  * Fixes Sketch 41 bugs (slices not being exported at all)
 * 0.4.0 (Oct 9)
   * Now exporting layers using exportables for all you wild exporters (for visually ignoring everything below those layers. Slices are still being exported using, well, slices)
   * Adds "xxxhdpi" (4x) export size for Android
@@ -20,4 +22,4 @@ Read more at https://ozzik.github.io/Slicer.
   * Hello world (that's a funny version number but yep)
 
 ## Notes
-* Tested on Sketch 40.2
+* Tested on Sketch 41
