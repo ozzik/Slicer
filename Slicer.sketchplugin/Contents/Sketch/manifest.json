@@ -30,7 +30,7 @@
     ]
   },
   "identifier" : "co.ozzik.slicer",
-  "version" : "0.4.0",
+  "version" : "0.4.1",
   "description" : "Exporting life",
   "authorEmail" : "hey@ozzik.co",
   "name" : "Slicer"

@@ -72,16 +72,18 @@ SL.Slicer = {
 	},
 
 	_exportSlice: function(selection, platform, config, context) {
-		var rect = MSSliceTrimming.trimmedRectForSlice(selection),
+		var ancestry = MSImmutableLayerAncestry.ancestryWithMSLayer(selection),
 			sizeData,
+			exportFormat,
 			slice,
 			fileName;
 
 		for (var i in config[platform]) {
 			sizeData = config[platform][i];
 			sizeData = _SIZES[platform][sizeData];
+			exportFormat = MSExportFormat.formatWithScale_name_fileFormat(sizeData.size, "", "png");
 
-			slice = MSExportRequest.requestWithRect_scale(rect, sizeData.size);
+			slice = MSExportRequest.exportRequestsFromLayerAncestry_exportFormats(ancestry, [ exportFormat ])[0];
 			SL.Slicer._saveSliceToFile(slice, selection, platform, sizeData, config, context);
 		}
 	},
@@ -637,8 +639,9 @@ SL.NinePatch = {
 		dittoPatch.resizeToFitChildrenWithOption(0);
 		ditto.resizeToFitChildrenWithOption(0);
 
-		var rect = MSSliceTrimming.trimmedRectForSlice(ditto),
-			slice = MSExportRequest.requestWithRect_scale(rect, 1);
+		var ancestry = MSImmutableLayerAncestry.ancestryWithMSLayer(ditto),
+			exportFormat = MSExportFormat.formatWithScale_name_fileFormat(1, "", "png");
+			slice = MSExportRequest.exportRequestsFromLayerAncestry_exportFormats(ancestry, [ exportFormat ])[0];
 
 		context.document.saveArtboardOrSlice_toFile(slice, exportPath + fileName);
 
