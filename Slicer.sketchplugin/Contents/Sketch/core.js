@@ -93,7 +93,9 @@ SL.Slicer = {
 			sizeData,
 			exportOption,
 			fileName;
-
+			
+		var rect = selection.absoluteRect().rect();
+			
 		for (var i in config[platform]) {
 			sizeData = config[platform][i];
 			sizeData = _SIZES[platform][sizeData];
@@ -102,8 +104,10 @@ SL.Slicer = {
 			exportOption = selection.exportOptions().addExportFormat();
 			exportOption.setName("");
 			exportOption.setScale(sizeData.size);
-
+			
 			slices = MSExportRequest.exportRequestsFromExportableLayer(selection);
+			slices[0].rect = rect;
+
 			SL.Slicer._saveSliceToFile(slices[0], selection, platform, sizeData, config, context);
 		}
 
@@ -357,6 +361,7 @@ SL.UI = {
 		panel.setDirectoryURL(defaultPath);
 		panel.setCanChooseDirectories(true);
 		panel.setAllowsMultipleSelection(true);
+		panel.setCanCreateDirectories(true);
 		panel.setMessage("Select a directory to export to");
 
 		if (panel.runModal() == NSOKButton) {
