@@ -13,6 +13,8 @@ Read more at https://ozzik.github.io/Slicer.
 2. Open ```Slicer.sketchplugin``` (Sketch will magically install the plugin)
 
 ## Wha's new
+* 0.4.2 (Dec 8)
+  * Fixes trimming of transparent pixels when exporting layers (by superhero @girafic)
 * 0.4.1 (Nov 8)
   * Fixes Sketch 41 bugs (slices not being exported at all)
 * 0.4.0 (Oct 9)
