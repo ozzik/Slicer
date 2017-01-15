@@ -13,6 +13,8 @@ Read more at https://ozzik.github.io/Slicer.
 2. Open ```Slicer.sketchplugin``` (Sketch will magically install the plugin)
 
 ## Wha's new
+* 0.4.3 (Jan 15)
+  * Fixes unwillingness of short-name layers to get exported to Android (thanks Ronit Klein!)
 * 0.4.2 (Dec 8)
   * Fixes trimming of transparent pixels when exporting layers (by superhero @girafic)
 * 0.4.1 (Nov 8)

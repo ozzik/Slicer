@@ -57,7 +57,7 @@ SL.Slicer = {
 				config.nestedFolder = (config.android.length && config.ios.length) ? platforms[platform] + "/" : "";
 
 				// Possible 9 patch layer
-				if (platform == "android" && selection[s].name().indexOf(".9") == selection[s].name().length() - 2) {
+				if (platform == "android" && selection[s].name().indexOf(".9") == selection[s].name().length() - 2 && selection[s].name().length >= 3) {
 					isSuccess &= SL.NinePatch.try(selection[s], context, config);
 				} else if (selection[s].class() == "MSSliceLayer") { // Slice
 					SL.Slicer._exportSlice(selection[s], platform, config, context);
