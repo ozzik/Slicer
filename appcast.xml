@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Slicer</title>
+    <link>https://raw.githubusercontent.com/ozzik/slicer/master/appcast.xml</link>
+    <description>Exporting life</description>
+    <language>en</language>
+      <item>
+        <title>Version 0.4.4</title>
+        <description>
+          <![CDATA[
+            <ul>
+              <li>Minor update v0.4.4</li>
+            </ul>
+          ]]>
+        </description>
+        <enclosure url="https://github.com/ozzik/slicer/archive/master.zip" sparkle:version="0.4.4" />
+      </item>
+  </channel>
+</rss>

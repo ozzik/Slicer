@@ -30,8 +30,9 @@
     ]
   },
   "identifier" : "co.ozzik.slicer",
-  "version" : "0.4.3",
+  "version" : "0.4.4",
   "description" : "Exporting life",
   "authorEmail" : "hey@ozzik.co",
-  "name" : "Slicer"
+  "name" : "Slicer",
+  "appcast": "https://raw.githubusercontent.com/ozzik/slicer/master/appcast.xml"
 }
